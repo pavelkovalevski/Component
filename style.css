@@ -15,9 +15,9 @@ body {
     padding: 40px 0 0;
 }
 
-.component__slider {
+/* .component__slider {
     height: 100%;
-}
+} */
 
 .component__content {
     width: 55.6%;
@@ -65,9 +65,14 @@ body {
     font-size: 66px;
     line-height: 78px;
     font-weight: 700;
-    /* overflow: hidden; */
+    overflow: hidden;
     flex-direction: column;
     align-items: flex-start;
+}
+
+.slider__wrapper {
+    transform: translateY(-78px);
+    height: 100%
 }
 
 .slider__el {

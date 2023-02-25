@@ -1,7 +1,9 @@
 ;(function(window) {
 /* 'use strict'; */
 
-let elementsNumber = 5;
+//let id = [];
+//let className = [];
+//let inner = [];
 
 function ChangeContent(text, image) {
     this.contentDescrText = document.querySelector('.component__text');
@@ -9,7 +11,6 @@ function ChangeContent(text, image) {
     this.contentDescrImageWrapper = document.querySelector('.component__image');
     this.contentDescrImage = this.contentDescrImageWrapper.querySelector('img');
     this.contentDescrImage.src = image;
-    /* this._init(); */
 };
 
 function CheckElementStatus() {
@@ -20,37 +21,117 @@ function CheckElementStatus() {
     };
 };
 
-/* CreateContent.prototype._init = function() {
-    this.content = document.getElementById('slider__content');
-    this.contentDescr = document.createElement('div');
-    this.contentDescr.className = 'component__descr component__descr_active';
-    this.content.appendChild( this.contentDescr );
-    //text
-    this.contentDescrText = document.createElement('p');
-    this.contentDescrText.className = 'component__text';
-    this.contentDescrText.innerHTML = this.text;
-    this.contentDescr.appendChild( this.contentDescrText );
-    //image wrapper
-    this.contentDescrImageWrapper = document.createElement('div');
-    this.contentDescrImageWrapper.className = 'component__image';
-    this.contentDescr.appendChild( this.contentDescrImageWrapper );
-    //image
-    this.contentDescrImage = document.createElement('img');
-    this.contentDescrImage.src = this.image;
-    this.contentDescrImageWrapper.appendChild( this.contentDescrImage );
+function TranslateSliderElements(clicked, i) {
+    this.root = document.getElementById('component');
+    this.listWrapper = document.querySelector('.slider__wrapper');
+    this.list = this.root.querySelectorAll('.slider__el');
+    this.activeElement = this.root.querySelector('.slider__el_active');
+    this.clickedElement = clicked;
+
+
+    if(this.clickedElement.offsetTop > this.activeElement.offsetTop) {
+        h = -(this.activeElement.offsetHeight/2 + 35 + this.clickedElement.offsetHeight/2)
+    } else if(this.clickedElement.offsetTop < this.activeElement.offsetTop) {
+        h = this.clickedElement.offsetTop + this.clickedElement.offsetHeight
+    } else {
+        return
+    }
+
+    this.list.forEach(item => {
+        item.style.transform = `translate(0px, ${h}px)`;
+    });
+
+    console.log(this.clickedElement.offsetTop, this.clickedElement.offsetHeight, h);
+};
+
+/* function GetData() {
+    this.items = document.querySelectorAll('.slider__el');
+    this.items.forEach(item => {
+        id.push(item.id)
+        className.push(item.className)
+        inner.push(item.innerHTML)
+    });
+    console.log(id, className, inner);
 }; */
 
+/* function CreateObject(id, className, inner) {
+    let objects = []
+    let object = {
+        id: id,
+        className: className,
+        inner: inner,
+        N: 0,
+    }
+    for(i = 0; i < id.length; i++) {
+        object[i] = {
+            id: id[i],
+            className: className[i],
+            inner: inner[i],
+            N: i,
+        }
+        objects.push(object[i])
+    };
+    console.log(objects);
+}; */
+
+/* function CreateList() {
+    this._init();
+};
+
+function CreateElement(i) {
+    this.id = id[i];
+    this.className = className[i];
+    this.inner = inner[i];
+    this._init();
+};
+
+function DeleteList() {
+    this._init()
+};
+
+CreateList.prototype._init = function() {
+    this.root = document.getElementById('component');
+    this.sliderList = document.createElement('div');
+    this.sliderList.className = 'component__slider slider';
+    this.firstElem = this.root.firstChild.nextSibling;
+    this.root.insertBefore(this.sliderList, this.firstElem);
+};
+
+CreateElement.prototype._init = function() {
+    this.root = document.getElementById('component');
+    this.sliderList = this.root.querySelector('.component__slider');
+    this.sliderElement = document.createElement('div');
+    this.sliderElement.id = this.id;
+    this.sliderElement.className = this.className;
+    this.sliderElement.innerHTML = this.inner;
+    this.sliderList.appendChild(this.sliderElement);
+}
+
+DeleteList.prototype._init = function() {
+    this.root = document.getElementById('component');
+    this.sliderList = this.root.querySelector('.component__slider');
+    this.sliderList.remove();
+} */
+
+//window.GetData = GetData;
+//window.CreateObject = CreateObject;
+//window.CreateList = CreateList;
+//window.CreateElement = CreateElement;
+//window.DeleteList = DeleteList;
+window.TranslateSliderElements = TranslateSliderElements;
 window.ChangeContent = ChangeContent;
 window.CheckElementStatus = CheckElementStatus;
 
 }) (window);
 
 ;(function() {
-    const sliderElements = document.querySelectorAll('.slider__el');
+    let sliderElements = document.querySelectorAll('.slider__el');
 
-    sliderElements.forEach(item => {
+    sliderElements.forEach((item, i) => {
         item.addEventListener('click', () => {
+            new TranslateSliderElements(item, i);
             new CheckElementStatus();
+
             if(item.id === 'managment') {
                 var content = new ChangeContent('Человек, который с вами всегда на связи, дает простые ответы на сложные вопросы, готовит отчеты и контролирует всю разработку сайта от начала и до конца.', 'img/managment.png');
             } else if(item.id === 'backend') {
@@ -62,7 +143,12 @@ window.CheckElementStatus = CheckElementStatus;
             } else if(item.id === 'qa') {
                 var content = new ChangeContent('Отыщет все возможные ошибки, чтобы вашим пользователям не пришлось с ними столкнуться на уже работающем ресурсе.', 'img/QA.png');
             };
+
             item.classList.add('slider__el_active');
+            
+            /* new GetData();
+            new DeleteList();
+            new CreateList(); */
         });
     });
 })();
